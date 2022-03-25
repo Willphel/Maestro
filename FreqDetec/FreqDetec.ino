@@ -99,9 +99,11 @@ void loop()
 {  
   int buttonState = digitalRead(buttonPin);
   if(buttonState==HIGH){
-    //buttonState = digitalRead(buttonPin);
-    buttonState = LOW;
-    while(numNotes <180 && buttonState != HIGH){
+    delay(3000);
+    buttonState = digitalRead(buttonPin);
+    Serial.println("Recording");
+    //buttonState = LOW;
+    while(numNotes <180 && buttonState == HIGH){
         /*Sample SAMPLES times*/
     for(int i=0; i<SAMPLES; i++)
     {
@@ -125,59 +127,71 @@ void loop()
     double peak = FFT.MajorPeak(vReal, SAMPLES, SAMPLING_FREQUENCY);
     
     
-    if(peak < 1000){
+    if(peak > 1090 && peak < 2070){
       //Serial.print("");
+      //Serial.println(deltatime);
+      //if(deltatime < 4);
+      if(1090 < peak && peak < 1108){
+        Serial.println("C");
+        notes[numNotes] = 'C';
+        numNotes++;
+        //timer = newtimer;
+        delay(500);
+      }
+      else if(peak > 1210 && peak < 1224){
+        Serial.println("D");
+        notes[numNotes] = 'D';
+        numNotes++;
+        delay(250);
+      }
+      else if( 1340 < peak && peak < 1370){
+        Serial.println("E");
+        notes[numNotes] = 'E';
+        numNotes++;
+        delay(250);
+      }
+      else if(1440 < peak && peak < 1460){
+        Serial.println("F");
+        notes[numNotes] = 'F';
+        numNotes++;
+        delay(250);
+      }
+      else if(1620 < peak && peak < 1630){
+        Serial.println("G");
+        notes[numNotes] = 'G';
+        numNotes++;
+        delay(250);
+      }
+      else if(1820 < peak && peak < 1840){
+        Serial.println("A");
+        notes[numNotes] = 'A';
+        numNotes++;
+        delay(250);
+      }
+      else if(2020 < peak && peak < 2045){
+        Serial.println("B");
+        notes[numNotes] = 'B';
+        numNotes++;
+        delay(250);
+      }
+      else if(2049 < peak && peak < 2070){
+        Serial.println("C");
+        notes[numNotes] = 'H';
+        numNotes++;
+        delay(250);
+       }
+      else;
     }
-    else if(peak < 1108){
-      Serial.println("C");
-      notes[numNotes] = "C";
-      //Serial.println("C");
-      numNotes++;
-    }
-    else if(peak < 1244){
-      Serial.println("D");
-      notes[numNotes] = "D";
-      numNotes++;
-    }
-    else if(peak < 1400){
-      Serial.println("E");
-      notes[numNotes] = "E";
-      numNotes++;
-    }
-    else if(peak < 1479){
-      Serial.println("F");
-      notes[numNotes] = "F";
-      numNotes++;
-    }
-    else if(peak < 1661){
-      Serial.println("G");
-      notes[numNotes] = "G";
-      numNotes++;
-    }
-    else if(peak < 1860){
-      Serial.println("A");
-      notes[numNotes] = "A";
-      numNotes++;
-    }
-    else if(peak < 2050){
-      Serial.println("B");
-      notes[numNotes] = "B";
-      numNotes++;
-    }
-    else if(peak < 2100){
-      Serial.println("C");
-      notes[numNotes] = "H";
-      numNotes++;
-    }
-    delay(300);
+    //delay(500);
     //buttonState = digitalRead(buttonPin);
-    if(numNotes > 5)buttonState = HIGH;
+    //if(numNotes > 5)buttonState = HIGH;
     }
-
-  for(int i =0;i<180&&notes[i]!= '\0';i++){
+  Serial.println("Playing Back");
+  for(int i =0;i<180;i++){
+    Serial.println(notes[i]);
     playNote(notes[i]);
   }
-
+  Serial.println("End Play Back");
    
   }
    
